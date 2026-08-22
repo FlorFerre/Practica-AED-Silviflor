@@ -1,0 +1,42 @@
+ACCION 2.2.23 ES
+
+
+AMBIENTE 
+
+fecha=registro
+    año: N(4)
+    mes:1...12
+    dia:1...31
+finreg
+
+cliente= registro
+    id_casa: N(20) // Campo clave 
+    fecha_ultl: fecha
+    cant_lect: N (100)
+    Tipo_consu: ("A", "B", "C", "0") 
+finreg
+
+mediciones = registro
+    id_casa: N(20) //campo clave 
+    fecham: fecha 
+    consumo: N(5)
+finreg
+
+mae, sal: Archivo de cliente ordenado por id_casa
+regmae,regsal: clientes 
+mov: archivo de mediciones ordenados por id_casa
+regmov: mediciones
+
+procedimiento leer_maestro () ES
+    leer (mae, regmae)
+    SI FDA (mae) ENT
+        regmae.id_casa := HV
+    finsi
+finprocedimiento 
+
+procedimiento leer_mov() ES
+    leer (mov, regmov)
+    SI FIDA (mov) ENT
+        regmov.id_casa:= HV
+    finsi
+finprocedimiento

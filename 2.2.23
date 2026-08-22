@@ -40,3 +40,9 @@ procedimiento leer_mov() ES
         regmov.id_casa:= HV
     finsi
 finprocedimiento
+
+prom:= entero 
+
+FUNCION 
+
+MEDIOPAJA

@@ -41,7 +41,9 @@ procedimiento leer_mov() ES
     finsi
 finprocedimiento
 
-prom:= entero 
+resgfecha,fechaact: fecha
+contlect, total con, prom:= entero 
+resgidcasa: N (20)
 
 FUNCION 
 

@@ -1,0 +1,142 @@
+ACCION 2.2.23 ES
+AMBIENTE
+    fecha = registro
+        año: N(4)
+        mes: 1...12
+        dia: 1...31
+    finreg
+
+    cliente = registro
+        id_casa: N(20)
+        fecha_ultl: fecha
+        cant_lect: N(100)
+        prom_lect: real
+        Tipo_consu: ("A", "B", "C", "0")
+    finreg
+
+    mediciones = registro
+        id_casa: N(20)
+        fecham: fecha
+        consumo: N(5)
+    finreg
+    mae, sal: archivo de cliente ordenado por id_casa
+    regmae, regsal: cliente
+
+    mov: archivo de mediciones ordenado por id_casa
+    regmov: mediciones
+
+    cant_nuevas: entero
+    suma_nuevas: entero
+    prom: real
+
+    procedimiento leer_maestro() ES
+        leer(mae, regmae)
+        SI FDA(mae) ENT
+            regmae.id_casa := HV
+        FINSI
+    finprocedimiento
+
+    procedimiento leer_mov() ES
+        leer(mov, regmov)
+        SI FDA(mov) ENT
+            regmov.id_casa := HV
+        FINSI
+    finprocedimiento
+
+    FUNCION tipo_consumidor(prom: real): caracter ES
+        SI prom < 20 ENTONCES
+            tipo_consumidor := "A"
+        SINO
+            SI prom < 40 ENTONCES
+                tipo_consumidor := "B"
+            SINO
+                tipo_consumidor := "C"
+            FINSI
+        FINSI
+    FINFUNCION
+
+PROCESO
+
+    ARR(mae)
+    ARR(mov)
+    leer_maestro()
+    leer_mov()
+    MIENTRAS (regmae.id_casa <> HV) O (regmov.id_casa <> HV) HACER
+
+        SI regmae.id_casa < regmov.id_casa ENTONCES
+            regsal := regmae
+            GRABAR(sal, regsal)
+            leer_maestro()
+
+        SINO
+
+            SI regmae.id_casa = regmov.id_casa ENTONCES
+                cant_nuevas := 0
+                suma_nuevas := 0
+                MIENTRAS regmov.id_casa = regmae.id_casa HACER
+
+                    SI (regmov.fecham.año < 2015) O ((regmov.fecham.año = 2015) Y (regmov.fecham.mes <= 1)) ENTONCES
+                        cant_nuevas := cant_nuevas + 1
+                        suma_nuevas := suma_nuevas + regmov.consumo
+                        regmae.fecha_ultl := regmov.fecham
+
+                    FINSI 
+                    leer_mov()
+                FINMIENTRAS
+
+                SI cant_nuevas > 0 ENTONCES
+
+                    regsal := regmae
+                    regsal.cant_lect := regmae.cant_lect + cant_nuevas
+                    prom :=  ((regmae.cant_lect * regmae.prom_lect) + suma_nuevas) / regsal.cant_lect
+                    regsal.prom_lect := prom
+                    regsal.Tipo_consu := tipo_consumidor(prom)
+                    GRABAR(sal, regsal)
+
+                SINO
+
+                    regsal := regmae
+                    GRABAR(sal, regsal)
+
+                FINSI
+
+                leer_maestro()
+
+            SINO
+
+                // regmov.id_casa < regmae.id_casa
+                // Es una conexión nueva
+
+                regsal.id_casa := regmov.id_casa
+                regsal.cant_lect := 0
+                regsal.prom_lect := 0
+                regsal.Tipo_consu := "0"
+
+                cant_nuevas := 0
+                suma_nuevas := 0
+
+                MIENTRAS regmov.id_casa = regsal.id_casa HACER
+
+                    SI (regmov.fecham.año < 2015) O ((regmov.fecham.año = 2015) Y (regmov.fecham.mes <= 1)) ENTONCES
+                        cant_nuevas := cant_nuevas + 1
+                        suma_nuevas := suma_nuevas + regmov.consumo
+                        regsal.fecha_ultl := regmov.fecham
+                    FINSI
+                    leer_mov()
+                FINMIENTRAS
+                SI cant_nuevas > 0 ENTONCES
+
+                    regsal.cant_lect := cant_nuevas
+                    regsal.prom_lect := suma_nuevas / cant_nuevas
+                    regsal.Tipo_consu := tipo_consumidor(regsal.prom_lect)
+                FINSI
+                GRABAR(sal, regsal)
+            FINSI
+        FINSI
+    FINMIENTRAS
+
+    cerrar(mae)
+    cerrar(mov)
+    cerrar(sal)
+
+FINACCION

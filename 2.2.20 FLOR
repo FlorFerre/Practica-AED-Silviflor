@@ -1,0 +1,87 @@
+ACCION 2.2.20 ES 
+
+AMBIENTE   
+
+fecha = REGISTRO
+  aa: N(4)
+  mm:1...12
+  dd: 1...31
+FINREGISTRO
+
+alumnos = REGISTRO
+  ayn: AN(100)
+  carrera: ("ISI","IEM", "IQ")
+   nroleg: N(5) 
+   fnacimiento: fecha
+   fingreso: fecha
+   DNI: N(8)
+   Sexo: ("M", "F")
+   Fultexamenaprob: fecha
+   Nota: 1...10
+FINREGISTRO
+
+examenes = REGISTRO  
+  nroleg: N(5) 
+  carrera: ("ISI","IEM", "IQ")
+  codmat: N(10)
+  fexa: fecha
+  Nota: 1...10
+FINREGISTRO
+
+alu,sal : archivo de alumnos ordenado por nrolegajo
+rsal,ralu:alumnos
+exa: archivo de examenes ordenado por nro legajo
+rexa: examenes 
+
+
+		procedimiento leer_alum()es
+			leer(alu, ralu)
+			si FDA(alu)entonces
+				ralu.nroleg:=HV
+			finsi
+		finprocedimiento
+
+		procedimiento leer_exam()es
+			leer(exa, rexa)
+			si FDA(exa)entonces
+				rexa.nroleg:=HV
+			finsi
+		finprocedimiento
+
+		procedimiento modificacion() es
+			rsal.fultexa:=rexa.fexa
+			rsal.nota:=rexa.nota
+		finprocedimiento
+
+	PROCESO
+  
+		Abrir E/(alu)
+		Abrir E/(exa)
+		Abrir S/(sal)
+		leer_alu
+		leer_exa
+
+		MIENTRAS (ralu.nroleg <> HV o rexa.nroleg <> HV) hHACER 
+			SI (ralu.nroleg < rexa.nroleg) ENT
+				rsal:=ralu
+        grabar(sal, rsal)
+				leer_alu
+			SINO 
+				rsal.nroleg:=ralu.nroleg
+        MIENTRAS (ralu.nroleg = rexa.nroleg) HACER
+					SI (rexa.nota >= 6) ENT
+						modificacion()
+					FINSI
+					leer_exa()
+				FINMIENTRAS
+				grabar(sal, rsal)
+				leer_alu()
+			FINSI
+		FINMIENTRAS
+    
+		cerrar(alu)
+		cerrar(exa)
+  FINPROCESO
+    
+FINAACION
+

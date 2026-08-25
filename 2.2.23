@@ -46,6 +46,7 @@ contlect, totcon, prom:= entero
 resgidcasa: N (20)
 
 FUNCION consumidor(prom:entero):caracter
+
                 SEGUN promedio hacer
                 < 20000 : consumidor:= "A"
                 < 40000 : consumidor:= "B"

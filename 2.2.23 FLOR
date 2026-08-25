@@ -71,6 +71,18 @@ FINFUNCION
             prom := totcon DIV contlect
         finprocedimiento
 
+PROCESO 
+
+ABRIR E/ (cli) 
+ABRIR E/ (med) 
+ABRIR E/ (sal) 
+
+Leer (cli) 
+Leer (med) 
+
+
+
+
 
 
 

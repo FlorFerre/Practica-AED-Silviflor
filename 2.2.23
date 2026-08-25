@@ -11,7 +11,7 @@ finreg
 
 cliente= registro
     id_casa: N(20) // Campo clave 
-    fecha_ultl: fecha
+    fecha_ult: fecha
     cant_lect: N (100)
     Tipo_consu: ("A", "B", "C", "0") 
 finreg
@@ -22,29 +22,56 @@ mediciones = registro
     consumo: N(5)
 finreg
 
-mae, sal: Archivo de cliente ordenado por id_casa
-regmae,regsal: clientes 
-mov: archivo de mediciones ordenados por id_casa
-regmov: mediciones
+cli, sal: Archivo de cliente ordenado por id_casa
+regcli,regsal: clientes 
+med: archivo de mediciones ordenados por id_casa
+regmed: mediciones
 
-procedimiento leer_maestro () ES
-    leer (mae, regmae)
-    SI FDA (mae) ENT
-        regmae.id_casa := HV
+procedimiento leer_cliente () ES
+    leer (cli, regcli)
+    SI FDA (cli) ENT
+        regcli.id_casa := HV
     finsi
 finprocedimiento 
 
-procedimiento leer_mov() ES
-    leer (mov, regmov)
-    SI FIDA (mov) ENT
-        regmov.id_casa:= HV
+procedimiento leer_medicioness() ES
+    leer (med, regmed)
+    SI FIDA (med) ENT
+        regmed.id_casa:= HV
     finsi
 finprocedimiento
 
 resgfecha,fechaact: fecha
-contlect, total con, prom:= entero 
+contlect, totcon, prom:= entero 
 resgidcasa: N (20)
 
-FUNCION 
+FUNCION consumidor(prom:entero):caracter
+                SEGUN promedio hacer
+                < 20000 : consumidor:= "A"
+                < 40000 : consumidor:= "B"
+                >= 40000 : consumidor:= "C"
+                FIN SEGUN
+FINFUNCION
+
+        procedimiento tratar_movimiento() es                                   
+            resgidcasa:= rmov.id_casa
+            contlect:=0
+            totcon:=0
+            MIENTRAS (regmed.id_casa = resgidcasa) HACER
+                SI (regmed.fecha_med.año < 2015) O (regmed.fecha_med.mes = 1 Y regmed.fecha_med.dia = 2015)
+                    contlect:= contlect + 1
+                    regsal.fecha_ult :=regmed.fecha_med
+                    totcon:= totcon+ rmed.consumo
+                FINSI
+                
+            leer_med()
+            FINMIENTRAS
+
+            prom := totcon DIV contlect
+        finprocedimiento
+
+
+
+
 
 MEDIOPAJA

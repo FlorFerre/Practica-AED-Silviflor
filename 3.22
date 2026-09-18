@@ -30,7 +30,7 @@ finpra
     para i:= 1 hasta 5 hacer
      para j:= 1 hasta 5 hacer
        sil(1, i) := sil(1,i) + flor(i,j)
-       sil(2,j):= S(2,j)+ M(i,j)
+       sil(2,j):= sil(2,j)+ flor(i,j)
 
      finpara
    finpara

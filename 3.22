@@ -16,7 +16,12 @@ PROCESO
          leer (flor(i,j))
      FinPara 
    FinPara
- 
+ // Nico 
+
+para i:= 1 hasta 5 hacer 
+ paraj:= 1 a 2 hacer 
+ finpara
+finpra
     Para j:= 1 hasta 5 hacer 
        sil (1,j):=0
        sil (2,j):= 0
@@ -25,7 +30,7 @@ PROCESO
     para i:= 1 hasta 5 hacer
      para j:= 1 hasta 5 hacer
        sil(1, i) := sil(1,i) + flor(i,j)
-       sil[2,j] := S(2,j)+ M(i,j)
+       sil(2,j):= S(2,j)+ M(i,j)
 
      finpara
    finpara

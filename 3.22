@@ -1,0 +1,49 @@
+Dada una matriz cuadrada de 5 x 5 de números, sumar filas y columnas y guardar en una matriz de 2 x 5, de modo que la fila 1 contenga la suma de cada fila y la fila 2, la suma de cada columna)
+
+
+ACCION 3.22 ES
+
+AMBIENTE 
+
+ i, j  :entero
+flor: matriz (1..5,1..5) de entero
+sil: matriz (1...2, 1...5) de entero 
+
+PROCESO
+
+   PARA i:= 1 hasta 5 HACER 
+     Para j := 1 hasta 5 HACER
+         leer (flor(i,j))
+     FinPara 
+   FinPara
+ 
+    Para j:= 1 hasta 5 hacer 
+       sil (1,j):=0
+       sil (2,j):= 0
+    FinPara
+
+    para i:= 1 hasta 5 hacer
+     para j:= 1 hasta 5 hacer
+       sil(1, i) := sil(1,i) + flor(i,j)
+       sil[2,j] := S(2,j)+ M(i,j)
+
+     finpara
+   finpara
+
+
+    para i := 1 hasta 2 hacer
+        para j := 1 hasta 5 hacer
+            escribir(Sil[i,j])
+        fin_para
+    fin_para
+fin_accion
+
+
+
+
+
+
+
+
+
+  

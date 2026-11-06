@@ -1,0 +1,63 @@
+# Guía para publicar el proyecto en GitHub
+
+## 1. Crear el repositorio
+
+1. Ingresar a https://github.com/.
+2. Crear un repositorio nuevo llamado `simulador-artemis-sls`.
+3. Seleccionar visibilidad **Public**.
+4. No es necesario generar archivos iniciales si ya tienen el proyecto en sus computadoras.
+
+## 2. Preparar la carpeta
+
+La carpeta debe contener:
+
+```text
+Artemis_Entrega/
+├── main.c
+├── artemis.h
+├── artemis.c
+├── validaciones.h
+├── validaciones.c
+├── Makefile
+├── README.md
+├── GUION_VIDEO.md
+└── GITHUB.md
+```
+
+## 3. Subir el proyecto desde una terminal
+
+Ejecutar estos comandos dentro de la carpeta del proyecto, reemplazando la URL por la del repositorio creado:
+
+```bash
+git init
+git add main.c artemis.h
+git commit -m "Crear estructura principal y tipos de datos"
+
+git add validaciones.c validaciones.h
+git commit -m "Implementar lectura y validacion de entradas"
+
+git add artemis.c
+git commit -m "Implementar calculos y reporte de la mision"
+
+git add Makefile README.md GUION_VIDEO.md GITHUB.md
+git commit -m "Agregar compilacion y documentacion"
+
+git branch -M main
+git remote add origin URL_DEL_REPOSITORIO
+git push -u origin main
+```
+
+## 4. Trabajo colaborativo
+
+Si trabajan varias personas, lo recomendable es que cada integrante realice cambios reales en una rama propia y los integre mediante Pull Requests. Cada integrante debe usar su propia cuenta de GitHub.
+
+**Importante:** no inventen commits ni los hagan todos al final. El historial debe reflejar el trabajo real y progresivo de cada integrante, como pide la consigna. Los mensajes anteriores son una propuesta de organización: adapten los commits a los cambios que efectivamente realicen.
+
+## 5. Antes de entregar
+
+- Verificar que el repositorio sea público.
+- Comprobar que estén todos los `.c`, `.h`, el Makefile y el README.
+- Compilar desde cero con `make`.
+- Ejecutar el caso de prueba y las pruebas de error.
+- Agregar al README los integrantes, comisión y enlace real del repositorio.
+- Subir el video y agregar su enlace al README o a la entrega de la plataforma.

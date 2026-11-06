@@ -1,0 +1,139 @@
+# ARTEMIS: Simulador de Misiones SLS
+
+## 1. Integrantes y comisión
+
+- Integrante 1: [Nombre y apellido]
+- Integrante 2: [Nombre y apellido]
+- Integrante 3: [Nombre y apellido]
+- Comisión: [Comisión]
+
+## 2. Descripción del escenario y reglas
+
+El programa representa una simulación simplificada del ascenso vertical de la nave Orion impulsada por el cohete Space Launch System (SLS), dentro del escenario de la misión Artemis.
+
+La simulación contempla tres etapas principales:
+
+1. **Despegue e impulso con SRB:** se calcula la velocidad y la altura alcanzadas al finalizar la primera fase de aceleración constante.
+2. **Ascenso principal:** se calcula la rapidez de la nave desde el desacople hasta la altitud en la que se apagan los motores.
+3. **Apogeo:** se supone que los motores fallan o se apagan y que la nave continúa ascendiendo bajo la acción de la gravedad hasta alcanzar velocidad vertical cero. Se calcula esa altura máxima.
+
+El usuario ingresa los parámetros físicos desde el menú. El programa verifica que sean válidos y luego realiza los cálculos. No se considera la resistencia del aire ni la variación de la gravedad con la altura; se utiliza el modelo simplificado indicado para el trabajo.
+
+## 3. Funcionamiento
+
+Al iniciar, aparece un menú con estas opciones:
+
+- **1. Ver briefing:** muestra las etapas generales de la misión.
+- **2. Ingresar parámetros:** solicita velocidad y altura inicial, aceleraciones, tiempo de la primera fase, altitud de apagado y gravedad.
+- **3. Ejecutar cálculos:** valida los datos y calcula los resultados de la simulación.
+- **4. Consultar reporte:** muestra los resultados y el historial de las tres etapas.
+- **0. Salir:** finaliza el programa.
+
+El reporte incluye la velocidad y altura al desacople (`v1`, `y1`), la rapidez al apagado (`v2`), la altura máxima (`hmax`) y la aceleración de la primera fase expresada como múltiplo de la gravedad terrestre.
+
+### Fórmulas utilizadas
+
+Primera fase:
+
+- `v1 = v0 + a1 * t1`
+- `y1 = y0 + v0 * t1 + (a1 * t1^2) / 2`
+
+Segunda fase:
+
+- `v2 = sqrt(v1^2 + 2 * a2 * (h - y1))`
+
+Ascenso posterior al apagado:
+
+- `hmax = h + v2^2 / (2 * g)`
+
+Aceleración relativa:
+
+- `aceleracionG = a1 / g`
+
+## 4. Organización de los archivos
+
+- `main.c`: contiene la función `main`, el menú y el flujo general.
+- `artemis.h`: define las constantes, estructuras y prototipos públicos.
+- `artemis.c`: contiene la presentación, el briefing, la validación de parámetros físicos, el ingreso de datos, los cálculos y el reporte.
+- `validaciones.h`: declara las funciones de lectura segura.
+- `validaciones.c`: implementa la lectura y validación de entradas numéricas.
+- `Makefile`: automatiza la compilación y limpieza de archivos objeto.
+
+## 5. Compilación y ejecución
+
+Se necesita GCC y Make.
+
+En Linux, macOS o una terminal compatible:
+
+```bash
+make
+./artemis
+```
+
+Para borrar los archivos generados:
+
+```bash
+make clean
+```
+
+También se puede compilar sin Make:
+
+```bash
+gcc -std=c11 -Wall -Wextra -pedantic main.c artemis.c validaciones.c -lm -o artemis
+```
+
+En Windows, si se utiliza MinGW, se puede ejecutar el comando de compilación desde CMD o PowerShell y luego iniciar `artemis.exe`.
+
+## 6. Caso de prueba de referencia
+
+Ingresar estos valores:
+
+| Parámetro | Valor |
+|---|---:|
+| Velocidad inicial | 0 m/s |
+| Altura inicial | 0 m |
+| Aceleración fase 1 | 20 m/s² |
+| Tiempo fase 1 | 120 s |
+| Aceleración fase 2 | 12,5 m/s² |
+| Altitud de apagado | 160.000 m |
+| Gravedad | 9,8 m/s² |
+
+Resultados esperados aproximados:
+
+- `v1 = 2400,00 m/s`
+- `y1 = 144000,00 m`
+- `v2 = 2481,93 m/s`
+- `hmax = 474285,71 m`
+- `aceleracionG = 2,04 g`
+
+Los resultados pueden variar en los últimos decimales según el formato de impresión.
+
+## 7. Validaciones implementadas
+
+- El menú acepta únicamente una opción entera válida.
+- La lectura de parámetros rechaza texto, entradas incompletas y valores no finitos.
+- La velocidad inicial y las alturas no pueden ser negativas.
+- Las aceleraciones, el tiempo y la gravedad deben ser mayores que cero.
+- La altitud de apagado debe ser igual o superior a la altura inicial y, para que la simulación pueda ejecutarse, no puede ser inferior a la altura calculada al desacople.
+- Se comprueba que los resultados intermedios y finales sean finitos.
+
+## 8. Uso de Inteligencia Artificial
+
+Se utilizó ChatGPT como herramienta de apoyo para:
+
+- Analizar la consigna y organizar los entregables.
+- Proponer una separación del programa en módulos `.c` y `.h`.
+- Revisar la lectura segura de datos y las validaciones.
+- Preparar documentación e instrucciones de compilación.
+- Diseñar casos de prueba para comprobar los resultados físicos.
+
+**Consultas realizadas (adaptar a las consultas reales del grupo):**
+- “Separá este programa en módulos main.c, artemis.h, artemis.c y validaciones.c/.h”.
+- “Revisá las validaciones de entrada y los posibles errores del programa”.
+- “Prepará un README con descripción, funcionamiento y compilación”.
+
+**Validación y adaptación:** el grupo debe compilar el proyecto, ejecutar el caso de prueba de referencia, probar entradas incorrectas y revisar cada función para comprender y poder explicar las decisiones implementadas. El código final debe ser revisado y aprobado por todos los integrantes antes de la entrega.
+
+## 9. Repositorio
+
+Enlace: [Pegar aquí la URL pública del repositorio GitHub o GitLab]
